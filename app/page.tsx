@@ -1,101 +1,189 @@
-import Image from "next/image";
+import { Banknote, ChartSpline, Clock3, Coins } from "lucide-react";
+
+const markets = [
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "Finance",
+  },
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "Finance",
+  },
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "Finance",
+  },
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "Finance",
+  },
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "",
+  },
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "",
+  },
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "",
+  },
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "",
+  },
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "",
+  },
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "",
+  },
+  {
+    imgUrl: "https://taya.fi/images/main-logo.png",
+    title: "When will monad crypto launch?",
+    tag: "",
+  },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const trendMarkets = markets.filter((market) => market.tag !== "");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <main className="h-full bg-gray-100">
+      <div className="container mx-auto flex h-dvh flex-col gap-8 p-6">
+        <div className="flex flex-col gap-3">
+          <h2 className="text-lg font-bold text-gray-900">Trend</h2>
+          <div className="grid grid-cols-4 gap-4">
+            {trendMarkets.map((market) => (
+              <div className="flex flex-col gap-6 rounded-xl bg-white p-4 shadow">
+                <div className="flex items-start gap-3">
+                  <img
+                    src={market.imgUrl}
+                    alt="Market Photo"
+                    className="size-12 rounded-lg"
+                  />
+                  <div className="flex flex-col gap-1">
+                    <p className="font-semibold text-gray-800">
+                      {market.title}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-1 text-xs text-gray-700">
+                        <Coins className="size-3" />
+                        $6k
+                      </span>
+                      <span className="flex items-center gap-1 text-xs text-gray-700">
+                        <Banknote className="size-3" />
+                        $30k
+                      </span>
+                      <span className="flex items-center gap-1 text-xs text-gray-700">
+                        <ChartSpline className="size-3" />
+                        1.5%
+                      </span>
+                      <span className="flex items-center gap-1 text-xs text-gray-700">
+                        <Clock3 className="size-3" />
+                        Jan 01, 2025
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      className="rounded-md border border-gray-200 px-3 py-1 text-xs text-gray-500"
+                    >
+                      Yes 1.00
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-md border border-gray-200 px-3 py-1 text-xs text-gray-500"
+                    >
+                      No 1.00
+                    </button>
+                  </span>
+                  <span className="rounded-md bg-gray-100 px-3 py-1 text-xs text-gray-600">
+                    {market.tag}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <div className="flex flex-col gap-3">
+          <h2 className="text-lg font-bold text-gray-900">All</h2>
+          <div className="grid grid-cols-4 gap-4">
+            {markets.map((market) => (
+              <div className="flex flex-col gap-6 rounded-xl bg-white p-4 shadow">
+                <div className="flex items-start gap-3">
+                  <img
+                    src={market.imgUrl}
+                    alt="Market Photo"
+                    className="size-12 rounded-lg"
+                  />
+                  <div className="flex flex-col gap-1">
+                    <p className="font-semibold text-gray-800">
+                      {market.title}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-1 text-xs text-gray-700">
+                        <Coins className="size-3" />
+                        $6k
+                      </span>
+                      <span className="flex items-center gap-1 text-xs text-gray-700">
+                        <Banknote className="size-3" />
+                        $30k
+                      </span>
+                      <span className="flex items-center gap-1 text-xs text-gray-700">
+                        <ChartSpline className="size-3" />
+                        1.5%
+                      </span>
+                      <span className="flex items-center gap-1 text-xs text-gray-700">
+                        <Clock3 className="size-3" />
+                        Jan 01, 2025
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      className="rounded-md border border-gray-200 px-3 py-1 text-xs text-gray-500"
+                    >
+                      Yes 1.00
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-md border border-gray-200 px-3 py-1 text-xs text-gray-500"
+                    >
+                      No 1.00
+                    </button>
+                  </span>
+                  {market.tag && (
+                    <span className="rounded-md bg-gray-100 px-3 py-1 text-xs text-gray-600">
+                      {market.tag}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
