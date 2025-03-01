@@ -1,4 +1,4 @@
-import { Banknote, ChartSpline, Clock3, Coins } from "lucide-react";
+import { Clock3 } from "lucide-react";
 import Link from "next/link";
 
 type MarketCardProps = {
