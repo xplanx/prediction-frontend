@@ -12,8 +12,11 @@ import {
 import Link from "next/link";
 import TradingViewChart from "@/components/ui/TradingViewChart";
 
-export default function Page({ params }: { params: { id: string } }) {
-  const market = getMarketById(+params.id);
+type PageProps = Promise<{ id: string }>;
+
+export default async function Page(props: { params: PageProps }) {
+  const { id } = await props.params;
+  const market = getMarketById(+id);
 
   if (!market) {
     notFound();
