@@ -2,16 +2,11 @@ import { Tabs } from "@chakra-ui/react";
 
 import React from "react";
 import MarketCard from "./MarketCard";
+import { getAllMarkets } from "@/lib/markets";
 
-type MarketsTabProps = {
-  markets: {
-    imgUrl: string;
-    title: string;
-    tag: string;
-  }[];
-};
+export default function MarketsTab() {
+  const markets = getAllMarkets();
 
-export default function MarketsTab({ markets }: MarketsTabProps) {
   const tabs = [
     { label: "All Topics", value: "all" },
     { label: "Crypto", value: "crypto" },
