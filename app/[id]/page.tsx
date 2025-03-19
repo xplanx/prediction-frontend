@@ -24,8 +24,8 @@ export default async function Page(props: { params: PageProps }) {
 
   return (
     <main className="min-h-screen bg-slate-950">
-      <div className="mx-auto flex min-h-screen max-w-7xl gap-8 p-6">
-        <div className="flex w-3/4 flex-col rounded-3xl border border-slate-800">
+      <div className="mx-auto flex min-h-screen max-w-7xl flex-col gap-4 p-4 md:flex-row lg:gap-8 lg:p-6">
+        <div className="flex flex-1 flex-col rounded-3xl border border-slate-800">
           <div className="flex items-center justify-between border-b border-slate-800 px-4 py-3">
             <Link
               href="/"
@@ -43,14 +43,14 @@ export default async function Page(props: { params: PageProps }) {
             </button>
           </div>
           <div className="flex flex-1 flex-col gap-6 p-4">
-            <div className="flex items-start gap-3">
+            <div className="flex flex-row items-start gap-3 max-[510px]:flex-col">
               <img
                 src={market.imgUrl}
                 alt={market.title}
                 className="h-20 w-auto rounded-xl object-cover"
               />
               <div className="flex h-full flex-col gap-3">
-                <h2 className="text-2xl font-semibold text-slate-100">
+                <h2 className="text-2xl font-semibold text-slate-100 max-[510px]:text-xl">
                   {market.title}
                 </h2>
                 <div className="flex items-center gap-3">
@@ -66,25 +66,25 @@ export default async function Page(props: { params: PageProps }) {
               </div>
             </div>
             <div className="flex-1 overflow-hidden">
-              <div className="-m-1 h-[102%]">
+              <div className="-m-1 h-[420px] md:h-[102%]">
                 <TradingViewChart />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="relative h-max w-1/4 overflow-hidden rounded-xl border border-slate-800 bg-slate-900 p-4">
+        <div className="relative h-max w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-900 p-4 md:w-72">
           <Tabs.Root defaultValue="buy" variant="subtle">
             <Tabs.List className="flex items-center gap-4 border-b border-slate-700">
               <Tabs.Trigger
                 value="buy"
-                className="justify-center rounded-none border-b-2 border-transparent text-slate-300 transition-all hover:text-slate-100 data-[selected]:border-slate-100 data-[selected]:text-slate-100"
+                className="justify-center rounded-none border-b-2 border-transparent font-medium text-slate-300 transition-all hover:text-slate-100 data-[selected]:border-slate-100 data-[selected]:text-slate-100"
               >
                 Buy
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="sell"
-                className="justify-center rounded-none border-b-2 border-transparent text-slate-300 transition-all hover:text-slate-100 data-[selected]:border-slate-100 data-[selected]:text-slate-100"
+                className="justify-center rounded-none border-b-2 border-transparent font-medium text-slate-300 transition-all hover:text-slate-100 data-[selected]:border-slate-100 data-[selected]:text-slate-100"
               >
                 Sell
               </Tabs.Trigger>
