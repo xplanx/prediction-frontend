@@ -8,7 +8,7 @@ export default function MarketsTab() {
   const markets = getAllMarkets();
 
   const tabs = [
-    { label: "All Topics", value: "all" },
+    { label: "All", value: "all" },
     { label: "Crypto", value: "crypto" },
     { label: "Sports", value: "sports" },
     { label: "Culture", value: "culture" },
@@ -20,10 +20,10 @@ export default function MarketsTab() {
 
   return (
     <Tabs.Root defaultValue="all" variant="subtle" className="flex-1">
-      <Tabs.List className="flex items-center gap-4">
+      <Tabs.List className="flex flex-wrap items-center gap-2 lg:gap-4">
         {tabs.map((tab) => (
           <Tabs.Trigger
-            className="rounded-full border border-slate-800 px-4 text-slate-300 hover:bg-slate-800 hover:text-slate-100 data-[selected]:bg-slate-800 data-[selected]:text-slate-100"
+            className="justify-center rounded-full border border-slate-800 px-2.5 text-sm text-slate-300 hover:bg-slate-800 hover:text-slate-100 data-[selected]:bg-slate-800 data-[selected]:text-slate-100 lg:px-4 lg:text-base"
             value={tab.value}
             key={tab.value}
           >
@@ -33,7 +33,7 @@ export default function MarketsTab() {
       </Tabs.List>
       {tabs.map((tab) => (
         <Tabs.Content className="pt-6" value={tab.value} key={tab.value}>
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 gap-4 max-[510px]:grid-cols-1 md:grid-cols-3 lg:gap-6">
             {tab.value === "all"
               ? markets.map((market, index) => (
                   <MarketCard market={market} key={index} />
