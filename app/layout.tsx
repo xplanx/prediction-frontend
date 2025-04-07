@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Provider } from "../components/ui/provider";
+import { ChakraUiProvider } from "@/providers/Chakra";
+import { WalletProvider } from "@/providers/Wallet";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Provider>{children}</Provider>
+        <WalletProvider>
+          <ChakraUiProvider>{children}</ChakraUiProvider>
+        </WalletProvider>
       </body>
     </html>
   );

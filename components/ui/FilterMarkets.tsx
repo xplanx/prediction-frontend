@@ -25,7 +25,7 @@ export default function FilterMarkets() {
       variant="subtle"
       collection={filters}
       defaultValue={["trending"]}
-      className="right-0 block max-w-28 self-end rounded-full bg-slate-800 text-sm text-slate-100 md:absolute md:self-start lg:max-w-36 lg:text-base"
+      className="right-0 block max-w-28 self-end rounded-xl bg-slate-800 text-sm text-slate-100 md:absolute md:self-start lg:max-w-36 lg:text-base"
     >
       <SelectTrigger>
         <span className="w-full px-4">
