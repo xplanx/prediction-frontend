@@ -1,6 +1,10 @@
 "use client";
 import "@rainbow-me/rainbowkit/styles.css";
-import { getMonadRpcUrls, getMonadRpcUrlsFallback } from "@/utils/rpc";
+import {
+  getBscRpcUrls,
+  getMonadRpcUrls,
+  getMonadRpcUrlsFallback,
+} from "@/utils/rpc";
 import { ClientOnly } from "@chakra-ui/react";
 import {
   darkTheme,
@@ -24,20 +28,39 @@ const MONAD_TESTNET = defineChain({
   },
   rpcUrls: getMonadRpcUrls(),
   testnet: true,
-  contracts: {
-    multicall3: {
-      address: "0x6cEfcd4DCA776FFaBF6E244616ea573e4d646566",
-      blockCreated: 42209,
-    },
+  // contracts: {
+  //   multicall3: {
+  //     address: "0x6cEfcd4DCA776FFaBF6E244616ea573e4d646566",
+  //     blockCreated: 42209,
+  //   },
+  // },
+});
+
+const BSC_TESTNET = defineChain({
+  id: 97,
+  name: "BSC Testnet",
+  network: "bsc-testnet",
+  nativeCurrency: {
+    name: "Bnb",
+    symbol: "BNB",
+    decimals: 18,
   },
+  rpcUrls: getBscRpcUrls(),
+  testnet: true,
+  // contracts: {
+  //   multicall3: {
+  //     address: "0x6cEfcd4DCA776FFaBF6E244616ea573e4d646566",
+  //     blockCreated: 42209,
+  //   },
+  // },
 });
 
 export const WAGMI_CONFIG = getDefaultConfig({
   appName: "Taya DEX",
   projectId: "YOUR_PROJECT_ID",
-  chains: [MONAD_TESTNET],
+  chains: [MONAD_TESTNET, BSC_TESTNET],
   transports: {
-    [MONAD_TESTNET.id]: getMonadRpcUrlsFallback(),
+    [(MONAD_TESTNET.id, BSC_TESTNET.id)]: getMonadRpcUrlsFallback(),
   },
   ssr: true,
 });
