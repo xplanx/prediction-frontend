@@ -1,4 +1,4 @@
-import { Market } from "@/lib/markets";
+import { Market } from "@/lib";
 import { Progress } from "@chakra-ui/react";
 import { Clock3 } from "lucide-react";
 import Link from "next/link";
@@ -7,7 +7,7 @@ type MarketCardProps = {
   market: Market;
 };
 
-export default function MarketCard({ market }: MarketCardProps) {
+export function MarketCard({ market }: MarketCardProps) {
   return (
     <Link
       href={`/${market.id}`}

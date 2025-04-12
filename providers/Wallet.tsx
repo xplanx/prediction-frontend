@@ -4,12 +4,11 @@ import {
   getBscRpcUrls,
   getMonadRpcUrls,
   getMonadRpcUrlsFallback,
-} from "@/utils/rpc";
+} from "@/utils";
 import { ClientOnly } from "@chakra-ui/react";
 import {
   darkTheme,
   getDefaultConfig,
-  lightTheme,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
