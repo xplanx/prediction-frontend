@@ -7,7 +7,7 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-} from "../ui/select";
+} from "./Select";
 
 const filters = createListCollection({
   items: [
@@ -18,7 +18,7 @@ const filters = createListCollection({
   ],
 });
 
-export default function FilterMarkets() {
+export function FilterMarkets() {
   return (
     <SelectRoot
       size="md"

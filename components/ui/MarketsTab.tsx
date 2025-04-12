@@ -1,10 +1,9 @@
+import { getAllMarkets } from "@/lib";
 import { Tabs } from "@chakra-ui/react";
-
 import React from "react";
-import MarketCard from "./MarketCard";
-import { getAllMarkets } from "@/lib/markets";
+import { MarketCard } from "./MarketCard";
 
-export default function MarketsTab() {
+export function MarketsTab() {
   const markets = getAllMarkets();
 
   const tabs = [

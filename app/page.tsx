@@ -1,6 +1,4 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import FilterMarkets from "../components/ui/FilterMarkets";
-import MarketsTab from "../components/ui/MarketsTab";
+import { ConnectButton, FilterMarkets, MarketsTab } from "@/components/ui";
 
 export default function Home() {
   return (
