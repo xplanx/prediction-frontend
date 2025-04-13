@@ -7,7 +7,7 @@ import {
   SelectRoot,
   SelectTrigger,
   SelectValueText,
-} from "./Select";
+} from "@/components/ui";
 
 const filters = createListCollection({
   items: [
