@@ -17,9 +17,9 @@ const MONAD_RPC_ENDPOINTS = [
 ];
 
 const BSC_RPC_ENDPOINTS = [
-  "https://bsc.meowrpc.com",
-  "https://bsc-pokt.nodies.app",
-  "https://bsc-rpc.publicnode.com",
+  "https://bsc-testnet-rpc.publicnode.com",
+  "https://api.zan.top/bsc-testnet",
+  "https://bsc-testnet.drpc.org",
 ];
 
 export function getMonadRpcUrls(): IChainRpcUrl {

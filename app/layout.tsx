@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./global.css";
 import { ChakraUiProvider, WalletProvider } from "@/providers";
+import { Toaster } from "react-hot-toast";
+import { MarketProvider, WalletContextProvider } from "@/contexts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,8 +18,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <WalletProvider>
-          <ChakraUiProvider>{children}</ChakraUiProvider>
+          <WalletContextProvider>
+            <MarketProvider>
+              <ChakraUiProvider>{children}</ChakraUiProvider>
+            </MarketProvider>
+          </WalletContextProvider>
         </WalletProvider>
+        <Toaster />
       </body>
     </html>
   );

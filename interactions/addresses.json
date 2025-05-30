@@ -1,0 +1,10 @@
+{
+  "BNB_TEST": {
+    "rpc": "https://bsc-testnet.drpc.org",
+    "addresses": {
+      "pyth": "0x2f3be4402bf86d30b0b32414c5B0D90E8baBEC2b",
+      "usdt": "0xEF880a8F3ef575CefBFD23F7166306adf9B21D87",
+      "predictionMarket": "0xdA848230f4035906BfbB794b341F120acF9d1575"
+    }
+  }
+}

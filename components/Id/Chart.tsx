@@ -54,7 +54,7 @@ export function Chart({ market }: ChartProps) {
             </div>
           </div>
         </div>
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden rounded-xl">
           <div className="-m-1 h-[420px] md:h-[102%]">
             <TradingViewChart />
           </div>

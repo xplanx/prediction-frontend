@@ -1,18 +1,133 @@
 "use client";
 
+import { useMarket, useWallet } from "@/contexts";
 import { Market } from "@/lib";
 import { Tabs } from "@chakra-ui/react";
 import { Progress } from "@chakra-ui/react";
+import { ethers, parseUnits } from "ethers";
 import { ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useAccount, useWalletClient } from "wagmi";
+import { Spinner } from "../ui";
+import addresses from "@/interactions/addresses.json" assert { type: "json" };
 
 type TransactionTabsProps = {
   market: Market;
 };
 
 export function TransactionTabs({ market }: TransactionTabsProps) {
-  const [buyAmount, setBuyAmount] = useState<number>(0);
-  const [sellAmount, setSellAmount] = useState<number>(0);
+  const [buySelectedOption, setBuySelectedOption] = useState<string>("yes");
+  const [sellSelectedOption, setSellSelectedOption] = useState<string>("yes");
+  const [buyAmount, setBuyAmount] = useState<string>("");
+  const [sellAmount, setSellAmount] = useState<string>("");
+  const { address, isConnected } = useAccount();
+  const { data: walletClient } = useWalletClient();
+  const { initializeWallet, tokenClient } = useWallet();
+  const { initializeMarket, marketClient } = useMarket();
+  const [buyIsLoading, setBuyIsLoading] = useState(false);
+  const [sellIsLoading, setSellIsLoading] = useState(false);
+  const marketId = String(market.id);
+
+  useEffect(() => {
+    async function initClient() {
+      if (!isConnected || !walletClient || !address) return;
+
+      try {
+        if (!tokenClient) {
+          await initializeWallet(walletClient);
+        }
+
+        if (!marketClient) {
+          await initializeMarket(walletClient);
+        }
+      } catch (error) {
+        console.error("Error initializing client:", error);
+        return;
+      }
+    }
+
+    initClient();
+  }, [
+    isConnected,
+    walletClient,
+    address,
+    initializeWallet,
+    tokenClient,
+    initializeMarket,
+    marketClient,
+  ]);
+
+  const handleBuy = async () => {
+    try {
+      setBuyIsLoading(true);
+
+      if (!buyAmount) {
+        toast.error("Please enter the purchase amount!");
+        return;
+      }
+
+      if (!tokenClient || !marketClient) {
+        toast.error("No client found!");
+        return;
+      }
+
+      const amount = parseUnits(buyAmount, 6);
+      const currentAllowance = await tokenClient.allowance(
+        address!,
+        addresses.BNB_TEST.addresses.predictionMarket,
+      );
+      const currentAllowanceBN = ethers.toBigInt(currentAllowance);
+
+      if (currentAllowanceBN >= amount) {
+        await marketClient.predict(
+          marketId,
+          ethers.encodeBytes32String(buySelectedOption),
+          amount,
+        );
+      } else {
+        await tokenClient.approve(
+          addresses.BNB_TEST.addresses.predictionMarket,
+          amount,
+        );
+
+        await marketClient.predict(
+          marketId,
+          ethers.encodeBytes32String(buySelectedOption),
+          amount,
+        );
+      }
+    } catch (error) {
+      toast.error("The purchase transaction failed!");
+    } finally {
+      setBuyIsLoading(false);
+    }
+  };
+
+  const handleSell = async () => {
+    try {
+      setSellIsLoading(true);
+
+      if (!sellAmount) {
+        toast.error("Please enter the sales amount!");
+        return;
+      }
+
+      if (!tokenClient || !marketClient) {
+        toast.error("No client found!");
+        return;
+      }
+
+      await marketClient.requestPayout(
+        marketId,
+        ethers.encodeBytes32String(sellSelectedOption),
+      );
+    } catch (error) {
+      toast.error("The sale transaction failed!");
+    } finally {
+      setSellIsLoading(false);
+    }
+  };
 
   return (
     <div className="relative h-max w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-900 p-4 md:w-72">
@@ -50,13 +165,15 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
           <span className="flex items-center gap-3">
             <button
               type="button"
-              className="w-1/2 rounded-xl border border-green-300/40 bg-green-300/20 px-3 py-2.5 text-center text-base font-medium text-green-500 transition-all hover:bg-green-300/40"
+              onClick={() => setBuySelectedOption("yes")}
+              className={`w-1/2 rounded-xl px-3 py-2.5 text-center text-base font-medium transition-all ${buySelectedOption === "yes" ? "bg-green-300/20 text-green-500 hover:bg-green-300/40" : "bg-neutral-300/20 text-neutral-400 hover:bg-neutral-300/40"}`}
             >
               Yes
             </button>
             <button
               type="button"
-              className="w-1/2 rounded-xl border border-red-300/40 bg-red-300/20 px-3 py-2.5 text-center text-base font-medium text-red-500 transition-all hover:bg-red-300/40"
+              onClick={() => setBuySelectedOption("no")}
+              className={`w-1/2 rounded-xl px-3 py-2.5 text-center text-base font-medium transition-all ${buySelectedOption === "no" ? "bg-red-300/20 text-red-500 hover:bg-red-300/40" : "bg-neutral-300/20 text-neutral-400 hover:bg-neutral-300/40"}`}
             >
               No
             </button>
@@ -68,7 +185,7 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
               </label>
               <span className="flex items-center gap-1">
                 <span className="max-w-24 truncate text-slate-100">
-                  {buyAmount}
+                  {buyAmount || 0}
                 </span>
                 <span>pts</span>
               </span>
@@ -76,7 +193,7 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
             <input
               type="number"
               value={buyAmount}
-              onChange={(e) => setBuyAmount(Number(e.target.value))}
+              onChange={(e) => setBuyAmount(e.target.value)}
               name="betting"
               id="betting"
               className="hide-spin-buttons w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 text-base font-semibold text-slate-300 outline-none transition-all placeholder:text-slate-600 focus:border-slate-700 focus:outline-none"
@@ -85,20 +202,35 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
           </div>
           <button
             type="button"
+            onClick={handleBuy}
             className="rounded-xl border border-blue-600 bg-blue-700 px-3 py-2.5 text-center text-base font-medium text-slate-100 transition-all hover:bg-blue-800"
           >
-            Buy
+            {buyIsLoading ? (
+              <Spinner size="24" stroke="3" speed="1.5" color="#f1f5f9" />
+            ) : (
+              "Buy"
+            )}
           </button>
           <ul className="flex flex-col gap-2 text-xs text-slate-400">
             <li className="flex items-center justify-between">
               <span>Price change</span>
               <span className="flex items-center gap-1">
-                0.00 pts <ArrowRight className="size-3" /> 0.35 pts
+                0.00 pts
+                <ArrowRight className="size-3" />
+                0.{buySelectedOption === "yes" ? market.yes : market.no} pts
               </span>
             </li>
             <li className="flex items-center justify-between">
               <span>Avg price</span>
-              <span>0.00 pts</span>
+              <span>
+                0.
+                {buyAmount
+                  ? buySelectedOption === "yes"
+                    ? market.yes
+                    : market.no
+                  : "00"}{" "}
+                pts
+              </span>
             </li>
             <li className="flex items-center justify-between">
               <span>Shares</span>
@@ -129,13 +261,15 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
           <span className="flex items-center gap-3">
             <button
               type="button"
-              className="w-1/2 rounded-xl border border-green-300/40 bg-green-300/20 px-3 py-2.5 text-center text-base font-medium text-green-500 transition-all hover:bg-green-300/40"
+              onClick={() => setSellSelectedOption("yes")}
+              className={`w-1/2 rounded-xl px-3 py-2.5 text-center text-base font-medium transition-all ${sellSelectedOption === "yes" ? "bg-green-300/20 text-green-500 hover:bg-green-300/40" : "bg-neutral-300/20 text-neutral-400 hover:bg-neutral-300/40"}`}
             >
               Yes
             </button>
             <button
               type="button"
-              className="w-1/2 rounded-xl border border-red-300/40 bg-red-300/20 px-3 py-2.5 text-center text-base font-medium text-red-500 transition-all hover:bg-red-300/40"
+              onClick={() => setSellSelectedOption("no")}
+              className={`w-1/2 rounded-xl px-3 py-2.5 text-center text-base font-medium transition-all ${sellSelectedOption === "no" ? "bg-red-300/20 text-red-500 hover:bg-red-300/40" : "bg-neutral-300/20 text-neutral-400 hover:bg-neutral-300/40"}`}
             >
               No
             </button>
@@ -147,7 +281,7 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
               </label>
               <span className="flex items-center gap-1">
                 <span className="max-w-24 truncate text-slate-100">
-                  {sellAmount}
+                  {sellAmount || 0}
                 </span>
                 <span>pts</span>
               </span>
@@ -155,7 +289,7 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
             <input
               type="number"
               value={sellAmount}
-              onChange={(e) => setSellAmount(Number(e.target.value))}
+              onChange={(e) => setSellAmount(e.target.value)}
               name="betting"
               id="betting"
               className="hide-spin-buttons w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 text-base font-semibold text-slate-300 outline-none transition-all placeholder:text-slate-600 focus:border-slate-700 focus:outline-none"
@@ -164,20 +298,35 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
           </div>
           <button
             type="button"
+            onClick={handleSell}
             className="rounded-xl border border-blue-600 bg-blue-700 px-3 py-2.5 text-center text-base font-medium text-slate-100 transition-all hover:bg-blue-800"
           >
-            Sell
+            {sellIsLoading ? (
+              <Spinner size="24" stroke="3" speed="1.5" color="#f1f5f9" />
+            ) : (
+              "Sell"
+            )}
           </button>
           <ul className="flex flex-col gap-2 text-xs text-slate-400">
             <li className="flex items-center justify-between">
               <span>Price change</span>
               <span className="flex items-center gap-1">
-                0.00 pts <ArrowRight className="size-3" /> 0.35 pts
+                0.00 pts
+                <ArrowRight className="size-3" />
+                0.{sellSelectedOption === "yes" ? market.yes : market.no} pts
               </span>
             </li>
             <li className="flex items-center justify-between">
               <span>Avg price</span>
-              <span>0.35 pts</span>
+              <span>
+                0.
+                {sellAmount
+                  ? sellSelectedOption === "yes"
+                    ? market.yes
+                    : market.no
+                  : "00"}{" "}
+                pts
+              </span>
             </li>
             <li className="flex items-center justify-between">
               <span>Shares</span>
