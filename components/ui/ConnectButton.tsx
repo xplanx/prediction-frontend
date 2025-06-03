@@ -6,6 +6,8 @@ import { useAccount, useWalletClient } from "wagmi";
 import { useEffect, useState } from "react";
 import { formatUnits } from "ethers";
 import { useWallet } from "@/contexts";
+import Image from "next/image";
+import Link from "next/link";
 
 export function ConnectButton() {
   const { address, isConnected } = useAccount();
@@ -92,28 +94,39 @@ export function ConnectButton() {
               }
 
               return (
-                <div className="flex rounded-xl bg-slate-900 font-bold text-slate-100 transition-all duration-200 hover:scale-105">
-                  <button
-                    onClick={openChainModal}
-                    className="flex items-center gap-1.5 py-1.5 pl-2.5 pr-2"
-                    type="button"
-                  >
-                    <img
-                      src="https://s2.coinmarketcap.com/static/img/coins/64x64/825.png"
-                      alt=""
-                      className="mt-px size-3.5"
-                    />
-                    {balance}
-                  </button>
+                <div className="flex items-center gap-4">
+                  <div className="flex rounded-xl bg-slate-900 font-bold text-slate-100 transition-all duration-200 hover:scale-105">
+                    <button
+                      onClick={openChainModal}
+                      className="flex items-center gap-1.5 py-1.5 pl-2.5 pr-2"
+                      type="button"
+                    >
+                      <img
+                        src="https://s2.coinmarketcap.com/static/img/coins/64x64/825.png"
+                        alt=""
+                        className="mt-px size-3.5"
+                      />
+                      {balance}
+                    </button>
 
-                  <button
-                    onClick={openAccountModal}
-                    className="flex items-center gap-1 rounded-xl border-2 border-slate-900 bg-gradient-to-r from-slate-100/10 to-slate-100/20 py-1.5 pl-2.5 pr-1"
-                    type="button"
-                  >
-                    {account.displayName}
-                    <ChevronDown className="h-4" />
-                  </button>
+                    <button
+                      onClick={openAccountModal}
+                      className="flex items-center gap-1 rounded-xl border-2 border-slate-900 bg-gradient-to-r from-slate-100/10 to-slate-100/20 py-1.5 pl-2.5 pr-1"
+                      type="button"
+                    >
+                      {account.displayName}
+                      <ChevronDown className="h-4" />
+                    </button>
+                  </div>
+                  <Link href="/profile" passHref>
+                    <Image
+                      src="/placeholder.png"
+                      alt="profile"
+                      height={38}
+                      width={38}
+                      className="rounded-full transition-all duration-200 hover:scale-110"
+                    />
+                  </Link>
                 </div>
               );
             })()}
