@@ -46,13 +46,13 @@ export function MarketCard({ market }: MarketCardProps) {
           type="button"
           className="w-1/2 rounded-xl border border-green-300/40 bg-green-300/20 px-3 py-1.5 text-center text-base font-medium text-green-500 transition-all hover:bg-green-300/40 lg:py-2.5"
         >
-          {market.outcome1}
+          yes
         </button>
         <button
           type="button"
           className="w-1/2 rounded-xl border border-red-300/40 bg-red-300/20 px-3 py-1.5 text-center text-base font-medium text-red-500 transition-all hover:bg-red-300/40 lg:py-2.5"
         >
-          {market.outcome2}
+          no
         </button>
       </span>
 

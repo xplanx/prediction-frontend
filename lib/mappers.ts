@@ -1,7 +1,7 @@
 import { Prediction } from "./types";
 
 export interface Market {
-  id: number;
+  id: string;
   imgUrl: string;
   title: string;
   tag: string;
@@ -31,7 +31,7 @@ function formatTimestamp(timestamp: string): string {
 
 export function mapPredictionToMarket(prediction: Prediction): Market {
   return {
-    id: parseInt(prediction.id),
+    id: prediction.id,
     title: prediction.name,
     imgUrl: prediction.url || "/placeholder-image.jpg",
     timestamp: formatTimestamp(prediction.createdAt),

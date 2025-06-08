@@ -63,16 +63,24 @@ export class PredictionMarketClient {
   }
 
   // buy
-  async predict(
+  async buy(
     marketId: string,
     outcome: string,
     amount: bigint,
   ): Promise<ethers.ContractTransaction> {
-    const tx = await this.contract.predict(marketId, outcome, amount);
+    const tx = await this.contract.buy(marketId, outcome, amount);
     return tx.wait();
   }
 
-  // sell
+  async sell(
+    marketId: string,
+    outcome: string,
+    amount: bigint,
+  ): Promise<ethers.ContractTransaction> {
+    const tx = await this.contract.sell(marketId, outcome, amount);
+    return tx.wait();
+  }
+
   async requestPayout(
     marketId: string,
     outcome: string,
