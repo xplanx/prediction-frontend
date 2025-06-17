@@ -27,7 +27,7 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
   const { initializeMarket, marketClient } = useMarket();
   const [buyIsLoading, setBuyIsLoading] = useState(false);
   const [sellIsLoading, setSellIsLoading] = useState(false);
-  const marketId = String(market.id);
+  const marketId = market.id;
 
   useEffect(() => {
     async function initClient() {
@@ -79,11 +79,13 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
       );
       const currentAllowanceBN = ethers.toBigInt(currentAllowance);
 
+      debugger;
       if (currentAllowanceBN >= amount) {
-        await marketClient.predict(
+        await marketClient.buy(
           marketId,
-          ethers.encodeBytes32String(buySelectedOption),
-          amount,
+          buySelectedOption === "yes" ? `0x0100000000000000000000000000000000000000000000000000000000000000` : 
+          `0x0200000000000000000000000000000000000000000000000000000000000000`,
+          10n,//?back
         );
       } else {
         await tokenClient.approve(
@@ -91,10 +93,11 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
           amount,
         );
 
-        await marketClient.predict(
+        await marketClient.buy(
           marketId,
-          ethers.encodeBytes32String(buySelectedOption),
-          amount,
+          buySelectedOption === "yes" ? `0x0100000000000000000000000000000000000000000000000000000000000000` : 
+            `0x0200000000000000000000000000000000000000000000000000000000000000`,
+          10n,//back
         );
       }
     } catch (error) {
@@ -118,10 +121,12 @@ export function TransactionTabs({ market }: TransactionTabsProps) {
         return;
       }
 
-      await marketClient.requestPayout(
+      await marketClient.sell(
         marketId,
-        ethers.encodeBytes32String(sellSelectedOption),
-      );
+        sellSelectedOption === "yes" ? `0x0100000000000000000000000000000000000000000000000000000000000000` : 
+        `0x0200000000000000000000000000000000000000000000000000000000000000`,
+        BigInt(sellAmount)
+    );
     } catch (error) {
       toast.error("The sale transaction failed!");
     } finally {

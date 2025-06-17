@@ -3,6 +3,7 @@ import "./global.css";
 import { ChakraUiProvider, WalletProvider } from "@/providers";
 import { Toaster } from "react-hot-toast";
 import { MarketProvider, WalletContextProvider } from "@/contexts";
+import { ApolloProvider } from "@/providers/ApolloProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +21,9 @@ export default function RootLayout({
         <WalletProvider>
           <WalletContextProvider>
             <MarketProvider>
-              <ChakraUiProvider>{children}</ChakraUiProvider>
+              <ApolloProvider>
+                <ChakraUiProvider>{children}</ChakraUiProvider>
+              </ApolloProvider>
             </MarketProvider>
           </WalletContextProvider>
         </WalletProvider>
